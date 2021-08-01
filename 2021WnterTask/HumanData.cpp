@@ -31,3 +31,11 @@ double HumanData::getHeight() {
 double HumanData::getMHeight() {
 	return this->mHeight;
 }
+
+double HumanData::getBMI() {
+	return this->bmi;
+}
+
+double HumanData::getStdWeight() {
+	return this->stdWeight;
+}

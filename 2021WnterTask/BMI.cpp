@@ -1,47 +1,45 @@
 #include <iostream>
 #include <iomanip>
 #include "ExcuteBMI.h"
-#include "CheckBMI.cpp"
 using namespace std;
 
 int main() {
 
 	bool result = 0;
-	double stdWeight;
-	const int STD_BMI = 22;
 
 	InputBMI *inputBMI = new InputBMI();
 	result = inputBMI->inputData();
 
 	// 結果がfalseなら処理終了
 	if (!result) {
+		delete inputBMI;
 		return 0;
 	}
 	
-	for (int i = 0; i <= inputBMI->getCount(); i++) {
+	for (int i = 0; i <= inputBMI->getTotalCount(); i++) {
 
 		// BMIの計算
 		GetBMI *getBMI = new GetBMI();
 
-		getBMI->setName(inputBMI->getNameList(i));
-		getBMI->setHeight(inputBMI->getHeightList(i));
-		getBMI->setWeight(inputBMI->getWeightList(i));
+		inputBMI->setCount(i);
+		getBMI->setName(inputBMI->getName());
+		getBMI->setHeight(inputBMI->getHeight());
+		getBMI->setWeight(inputBMI->getWeight());
 
 		getBMI->calcBMI();
 
-		// 標準体重
-		stdWeight = STD_BMI * (getBMI->getMHeight() * getBMI->getMHeight());
+		// 結果表示
+		DisplayBMI *displayBMI = new DisplayBMI(getBMI->getName(), getBMI->getBMI(), getBMI->getStdWeight());
 
-		// BMIの表示
-		cout << getBMI->getName() << "さんのBMIは、" << fixed << setprecision(1) << getBMI->getBMI() << "です。" << endl;
-
-		// 標準体重の表示
-		cout << getBMI->getName() << "さんの標準体重は、" << stdWeight << "kgです。" << endl;
-
-		// どのくらいの肥満度か判定する。
-		cout << checkBMI(getBMI->getBMI()) << endl;
+		if (inputBMI->getDiffereceFlag() == "y") {
+			displayBMI->displayResult(getBMI->getDeightDifferece());
+		} else {
+			displayBMI->displayResult();
+		}
 
 		delete getBMI;
+		delete displayBMI;
+
 	}
 
 	delete inputBMI;

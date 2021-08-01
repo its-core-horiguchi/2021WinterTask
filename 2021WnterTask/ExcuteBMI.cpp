@@ -1,10 +1,11 @@
 #include <iostream>
 #include <iomanip>
 #include "ExcuteBMI.h"
+#include "CheckBMI.cpp"
 using namespace std;
 
 InputBMI::InputBMI() {
-	this->count = 0;
+	this->totalCount = 0;
 }
 
 bool InputBMI::inputData() {
@@ -13,26 +14,26 @@ bool InputBMI::inputData() {
 		// 名前のキー入力
 		cout << "お名前を入力してください：";
 		cin >> this->name;
-		this->nameList[this->count] = this->name;
+		this->nameList[this->totalCount] = this->name;
 
 		// 身長（cm）のキー入力
 		cout << "身長を入力してください：";
 		cin >> this->height;
-		heightList[this->count] = this->height;
+		heightList[this->totalCount] = this->height;
 
 		// 体重（kg）のキー入力
 		cout << "体重を入力してください：";
 		cin >> this->weight;
-		weightList[this->count] = this->weight;
+		weightList[this->totalCount] = this->weight;
 
-		if (this->count < 2) {
+		if (this->totalCount < 2) {
 			// 追加で入力するか。
 			cout << "追加で入力しますか？(y/n)：";
 			cin >> this->yn;
 
 			if (this->yn == "y") {
 				// 「y」の場合は入力続行。
-				this->count = this->count + 1;
+				this->totalCount = this->totalCount + 1;
 				this->end = true;
 			}
 			else if (yn == "n") {
@@ -53,29 +54,84 @@ bool InputBMI::inputData() {
 
 	} while (this->end);
 
+	cout << "標準体重との差を追加で表示しますか？(y/n)：";
+	cin >> this->differeceFlag;
+
+	if (this->differeceFlag != "y" && this->differeceFlag != "n") {
+		// それ以外は処理終了。
+		this->end = false;
+		cout << "不明な入力です。処理を終了します。" << endl;
+		return false;
+	}
+
 	return true;
 }
 
-string InputBMI::getNameList(int i) {
-	return this->nameList[i];
+string InputBMI::getName() {
+	return this->nameList[this->count];
 }
 
-double InputBMI::getHeightList(int i) {
-	return this->heightList[i];
+double InputBMI::getHeight() {
+	return this->heightList[this->count];
 }
 
-int InputBMI::getWeightList(int i) {
-	return this->weightList[i];
+int InputBMI::getWeight() {
+	return this->weightList[this->count];
 }
 
-int InputBMI::getCount() {
-	return this->count;
+int InputBMI::getTotalCount() {
+	return this->totalCount;
+}
+
+void InputBMI::setCount(int count) {
+	this->count = count;
+}
+
+string InputBMI::getDiffereceFlag() {
+	return this->differeceFlag;
 }
 
 void GetBMI::calcBMI() {
+
+	// 標準BMI値
+	const int STD_BMI = 22;
+
+	// BMI計算
 	this->bmi = this->weight / (this->mHeight * this->mHeight);
+
+	// 標準体重計算
+	this->stdWeight = STD_BMI * (this->mHeight * this->mHeight);
+
+	// 標準体重との差を計算
+	this->weightDifferece = this->weight - this->stdWeight;
 }
 
-double GetBMI::getBMI() {
-	return this->bmi;
+double GetBMI::getDeightDifferece() {
+	return this->weightDifferece;
+}
+
+DisplayBMI::DisplayBMI(string name, double bmi, double stdWeight) {
+	this->name = name;
+	this->bmi = bmi;
+	this->stdWeight = stdWeight;
+}
+
+void DisplayBMI::displayResult() {
+	// BMIの表示
+	cout << this->getName() << "さんのBMIは、" << fixed << setprecision(1) << this->getBMI() << "です。" << endl;
+
+	// 標準体重の表示
+	cout << this->getName() << "さんの標準体重は、" << this->getStdWeight() << "kgです。" << endl;
+
+	// どのくらいの肥満度か判定する。
+	cout << checkBMI(this->getBMI()) << endl;
+}
+
+void DisplayBMI::displayResult(double weightDifferece) {
+
+	// 基本の情報を表示
+	this->displayResult();
+
+	// 標準体重との差を表示
+	cout << "標準体重との差は、" << weightDifferece << "kgです。" << endl;
 }

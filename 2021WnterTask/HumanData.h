@@ -12,10 +12,14 @@ public:
     void setHeight(double height);
     double getHeight();
     double getMHeight();
+    double getBMI();
+    double getStdWeight();
 
 protected:
     string name;
     double height;
     int weight;
     double mHeight;
+    double bmi;
+    double stdWeight;
 };
