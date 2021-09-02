@@ -91,6 +91,19 @@ string InputBMI::getDiffereceFlag() {
 	return this->differeceFlag;
 }
 
+GetBMI::GetBMI() {
+}
+
+GetBMI::GetBMI(const GetBMI &getBMI) {
+
+	cout << "コピーコンストラクタの実験" << endl;
+
+	this->name = getBMI.name;
+	this->bmi = getBMI.bmi;
+	this->stdWeight = getBMI.stdWeight;
+	this->weightDifferece = getBMI.weightDifferece;
+}
+
 void GetBMI::calcBMI() {
 
 	// 標準BMI値

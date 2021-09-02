@@ -19,25 +19,31 @@ int main() {
 	for (int i = 0; i <= inputBMI->getTotalCount(); i++) {
 
 		// BMIの計算
-		GetBMI *getBMI = new GetBMI();
+		GetBMI getBMI;
 
 		inputBMI->setCount(i);
-		getBMI->setName(inputBMI->getName());
-		getBMI->setHeight(inputBMI->getHeight());
-		getBMI->setWeight(inputBMI->getWeight());
+		getBMI.setName(inputBMI->getName());
+		getBMI.setHeight(inputBMI->getHeight());
+		getBMI.setWeight(inputBMI->getWeight());
 
-		getBMI->calcBMI();
+		getBMI.calcBMI();
+
+		// コピーコンストラクタの実験
+		GetBMI copyGetBMI = getBMI;
+
+		// 代入演算子の実験
+		GetBMI operatorGetBMI;
+		operatorGetBMI = copyGetBMI;
 
 		// 結果表示
-		DisplayBMI *displayBMI = new DisplayBMI(getBMI->getName(), getBMI->getBMI(), getBMI->getStdWeight());
+		DisplayBMI *displayBMI = new DisplayBMI(operatorGetBMI.getName(), operatorGetBMI.getBMI(), operatorGetBMI.getStdWeight());
 
 		if (inputBMI->getDiffereceFlag() == "y") {
-			displayBMI->displayResult(getBMI->getDeightDifferece());
+			displayBMI->displayResult(operatorGetBMI.getDeightDifferece());
 		} else {
 			displayBMI->displayResult();
 		}
 
-		delete getBMI;
 		delete displayBMI;
 
 	}

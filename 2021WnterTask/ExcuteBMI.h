@@ -7,6 +7,7 @@ class InputBMI : public HumanData {
 
 public:
 	InputBMI();
+	InputBMI(const InputBMI& inputBMI);
 	bool inputData();
 	string getName();
 	double getHeight();
@@ -32,8 +33,22 @@ private:
 	double weightDifferece;
 
 public:
+	GetBMI();
     void calcBMI();
 	double getDeightDifferece();
+	GetBMI(const GetBMI & getBMI);
+
+	GetBMI &operator=(const GetBMI &getBMI) {
+
+		cout << "‘ã“ü‰‰ŽZŽq‚ÌŽÀŒ±" << endl;
+
+		this->name = getBMI.name;
+		this->bmi = getBMI.bmi;
+		this->stdWeight = getBMI.stdWeight;
+		this->weightDifferece = getBMI.weightDifferece;
+
+		return *this;
+	}
 };
 
 
